@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Document</title>
+</head>
+<style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
+	img{
+		border: 0;
+	}
+	.banner{
+		width: 100%;
+		height: auto;
+		overflow: hidden;
+		
+	}
+	.ban{
+		height: auto;
+	}
+	.img{
+		height: auto;
+		float: left;
+		font-size: 0;
+	}
+	.img img{
+		width: 100%;
+	}
+</style>
+<body>
+	<div class="banner">
+		<div class="ban">
+			<div class="img">
+				<img src="images/1.jpg" alt="">
+			</div>
+			<div class="img">
+				<img src="images/2.jpg" alt="">
+			</div>
+			<div class="img">
+				<img src="images/3.jpg" alt="">
+			</div>
+			<div class="img">
+				<img src="images/5.jpg" alt="">
+			</div>
+		</div>
+	</div>
+	<script>
+	var cw=document.documentElement.clientWidth;
+	var banner=document.querySelector(".banner");
+	var ban=document.querySelector(".ban");
+	var img=document.querySelectorAll(".img");
+	ban.style.width=cw*img.length+'px';
+
+	for(var i=0;i<img.length;i++){
+		
+		img[i].style.width=cw+'px';
+	}
+
+	// var th=0;
+	
+	var index=0;
+	var bt=setInterval(moveL,2000);
+	
+
+	function moveL(){
+		index++;
+		if(index==img.length){
+			index=0;
+		}
+		ban.style.transition="transform .5s";
+		ban.style.transform="translate3d("+(-index*cw)+"px,0,0)";
+	}
+	ban.addEventListener("touchstart",function(){
+		clearInterval(bt);
+	})
+	ban.addEventListener("touchend",function(){
+		bt=setInterval(moveL,2000);
+	});
+	ban.addEventListener("touchstart",function(e){
+		// console.log(index);
+		// clearInterval(bt);
+		var th=e.targetTouches[0].clientX;
+		var tm=e.timeStamp;
+		var mh=0;
+		var nf=0;
+		// var eg=0;
+		// console.log(th);
+		// console.log(e);
+		// console.log(tm);
+		this.style.transition="";
+		function move(e){
+			mh=e.targetTouches[0].clientX;
+			mm=e.timeStamp;
+			nf=mh-th
+			// console.log(index);
+			ban.style.transform="translate3d("+(nf-index*cw)+"px,0,0)";
+		}
+		window.addEventListener("touchmove",move);
+
+		function end(e){
+			// bt=setInterval(moveL,2000);
+			// console.log(e);
+			em=e.timeStamp;
+			console.log(em-tm);
+			// console.log(e.changedTouches);
+			var eg=e.changedTouches[0].clientX-th;
+			// console.log(eg);
+
+			// window.removeEventListener("touchmove",move);
+			if(Math.abs(nf)>(cw/2)||(em-tm<100&&Math.abs(eg)>30)){
+
+				if(nf>0){
+					index--;
+				}else{
+					index++;
+				}
+				if(index==img.length){
+					index=img.length-1;
+				}
+				if(index==-1){
+					index=0;
+				}
+				// console.log(index);
+				ban.style.transition="transform .5s";
+				ban.style.transform="translate3d("+(-index*cw)+"px,0,0)";
+				
+			}else{
+				ban.style.transition="transform .5s";
+				ban.style.transform="translate3d("+(-index*cw)+"px,0,0)";
+				
+			}
+			ban.removeEventListener("touchend",end);
+		}
+		
+		ban.addEventListener("touchend",end);
+
+		// ban.removeEventListener("touchend",end);
+	})
+
+	
+	
+
+	</script>
+</body>
+</html>
